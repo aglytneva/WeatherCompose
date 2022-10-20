@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.weathercompose.compose.MainScreen
+import com.example.weathercompose.ui.compose.MainScreen
 import com.example.weathercompose.ui.theme.WeatherComposeTheme
 
 class MainActivity : ComponentActivity() {
