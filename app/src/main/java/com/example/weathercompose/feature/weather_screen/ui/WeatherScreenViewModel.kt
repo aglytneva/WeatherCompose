@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.weathercompose.base.BaseViewModel
 import com.example.weathercompose.base.Event
 import com.example.weathercompose.feature.weather_screen.WeatherInteractor
+import com.example.weathercompose.feature.weather_screen.ui.model.WeatherMainModel
 import kotlinx.coroutines.launch
 
 
@@ -11,35 +12,19 @@ class WeatherScreenViewModel(val interactor: WeatherInteractor) : BaseViewModel<
 
     override fun initialViewState(): ViewState =
         ViewState(
-            description = "",
-            iconWeather = "",
-            temperature = "          --",
-            windDeg = "   --",
+            descriptionCurent = "",
+            iconCurrent = "",
+            tempCurrent = "          --",
+            windDegCurrent = "   --",
             city = "---",
-            isSearchVisible = false
+            isSearchVisible = false,
+            weatherHourForecastList = emptyList(),
+            weatherDayForecastList = emptyList()
         )
 
     override fun reduce(event: Event, previousState: ViewState): ViewState? {
         when (event) {
-            is DataEvent.TempIsLoaded -> {
-                viewModelScope.launch {
-                    interactor.getTemp(event.city).fold(
-                        onError = {
-                            processDataEvent(DataEvent.OnWeatherFetchFailed(error = it))
-                        },
-                        onSuccess = {
-                            processDataEvent(
-                                DataEvent.OnTempFetchSucceed(
-                                    temperature = it.temperature,
-                                    city = event.city
-                                )
-                            )
-                        }
 
-                    )
-                }
-
-            }
             is DataEvent.WeatherIsLoaded -> {
                 viewModelScope.launch {
                     interactor.getWeather(event.city).fold(
@@ -49,7 +34,7 @@ class WeatherScreenViewModel(val interactor: WeatherInteractor) : BaseViewModel<
                         onSuccess = {
                             processDataEvent(
                                 DataEvent.OnWeatherFetchSucceed(
-                                    weatherModel = it,
+                                    weatherHourForecastList = it,
                                     city = event.city
                                 )
                             )
@@ -60,44 +45,20 @@ class WeatherScreenViewModel(val interactor: WeatherInteractor) : BaseViewModel<
 
                 return previousState.copy()
             }
-            is DataEvent.WindIsLoaded -> {
-                viewModelScope.launch {
-                    interactor.getWind(event.city).fold(
-                        onError = {
-                            processDataEvent(DataEvent.OnWeatherFetchFailed(error = it))
-                        },
-                        onSuccess = {
-                            processDataEvent(
-                                DataEvent.OnWindFetchSucceed(
-                                    windDeg = "  Ветер ${it.toTextualDescription(windDeg = it.windDeg)}" +
-                                            "  ${it.windSpeed} м/с",
-                                    city = event.city
-                                )
-                            )
-                        }
-                    )
-                }
-            }
-            is DataEvent.OnTempFetchSucceed -> {
-                return previousState.copy(
-//                    isLoadingTemp = false,
-                    temperature = event.temperature,
-                    city = event.city
-                )
-            }
-            is DataEvent.OnWindFetchSucceed -> {
-                return previousState.copy(
-//                    isLoadingWind = false,
-                    windDeg = event.windDeg,
-                    city = event.city
-                )
-            }
+
             is DataEvent.OnWeatherFetchSucceed -> {
                 return previousState.copy(
-//                    isLoadingWind = false,
-                    description = event.weatherModel.description,
-                    iconWeather = event.weatherModel.icon,
-                    city = event.city
+                    weatherHourForecastList = event.weatherHourForecastList.slice(0..12),
+                    city = event.city,
+                    descriptionCurent = event.weatherHourForecastList[0].description,
+                    iconCurrent = event.weatherHourForecastList[0].icon,
+                    tempCurrent = "${
+                        event.weatherHourForecastList[0].temperature.toInt().toString()
+                    }°C",
+                    windDegCurrent = event.weatherHourForecastList[0].windDeg,
+                    weatherDayForecastList =
+                        event.weatherHourForecastList
+                            .slice(0..event.weatherHourForecastList.size step 12)
                 )
             }
             is UiEvent.isSearchClicked -> {
@@ -106,11 +67,9 @@ class WeatherScreenViewModel(val interactor: WeatherInteractor) : BaseViewModel<
                 )
             }
 
-
-
             else -> return null
         }
-        return null
+
     }
 }
 

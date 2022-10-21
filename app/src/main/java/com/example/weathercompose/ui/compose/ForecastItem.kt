@@ -18,13 +18,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.example.weathercompose.R
+import com.example.weathercompose.feature.weather_screen.ui.model.WeatherMainModel
 import com.example.weathercompose.ui.theme.DarkGray
 import com.example.weathercompose.ui.theme.LightGray
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-@Preview(showBackground = true)
+
 @Composable
-fun ForecastItem() {
+fun ForecastItem(item: WeatherMainModel) {
+    val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val formatedDay = LocalDate.parse(item.allDateWeather, firstApiFormat).dayOfMonth.toString()
+    val formatedMonth = LocalDate.parse(item.allDateWeather, firstApiFormat).monthValue.toString()
+    val formatedDayWeek = LocalDate.parse(item.allDateWeather, firstApiFormat).dayOfWeek.toString()
+
+    fun dayToRusLang(day: String): String {
+        if (day == "MONDAY") return "ПН"
+        if (day == "TUESDAY") return "ВТ"
+        if (day == "WEDNESDAY") return "СР"
+        if (day == "THURSDAY") return "ЧТ"
+        if (day == "FRIDAY") return "ПТ"
+        if (day == "SATURDAY") return "СБ"
+        if (day == "SUNDAY") return "ВС"
+        return ""
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,16 +62,18 @@ fun ForecastItem() {
                 horizontalAlignment = Alignment.CenterHorizontally
             )
             {
-                Text(text = "17.10", color = Color.White, fontSize = 14.sp)
-                Text(text = "ПН", color = Color.White, fontSize = 14.sp)
+                Text(text = "${formatedDay}/${formatedMonth}", color = Color.White, fontSize = 14.sp)
+                Text(text = dayToRusLang(formatedDayWeek), color = Color.White, fontSize = 14.sp)
             }
-            Text(text = "Пасмурно", color = Color.White, fontSize = 14.sp)
-//            Text(text = "", color = Color.White, fontSize = 14.sp)
-            Text(text = "15°С", color = Color.White, fontSize = 24.sp)
+            Text(text = item.description, color = Color.White, fontSize = 14.sp)
+            Text(text = "${item.temperature.toInt()}°", color = Color.White, fontSize = 14.sp)
             Image(
-                painter = painterResource(R.drawable.ic_baseline_wb_sunny_24),
-                colorFilter = ColorFilter.tint(Color.Yellow),
-                contentDescription = "img3",
+                painter = rememberImagePainter(
+                    "http://openweathermap.org/img/wn/${item.icon}@2x.png",
+
+                ),
+                contentDescription = "ImgHoursWeather",
+                modifier = Modifier.size(24.dp),
             )
         }
     }

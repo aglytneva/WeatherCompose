@@ -1,6 +1,18 @@
 package com.example.weathercompose.feature.weather_screen.ui.model
 
-data class WindModel(val windDeg: String, val windSpeed: String) {
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+
+data class WeatherMainModel(
+    val description: String,
+    val icon: String,
+    val temperature: Double,
+    val windDeg: String,
+    val windSpeed: String,
+    val allDateWeather:String
+)
+{
 //    fun toTextualDescription(windDeg: String): String {
 //        if (windDeg.toFloat() > 337.5) return "Северный"
 //        if (windDeg.toFloat() > 292.5) return "Северо-западный"
@@ -23,5 +35,30 @@ data class WindModel(val windDeg: String, val windSpeed: String) {
         if (windDeg.toFloat() > 67.5) return "В"
         if (windDeg.toFloat() > 22.5)  return "СВ"
         return ""
+    }
+
+    val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+    fun formatToDayName( date:String):String {
+        val formatedDay = LocalDate.parse(date, firstApiFormat).dayOfWeek.toString()
+        return formatToDayName(formatedDay)
+    }
+    fun formatToDayNumber( date:String):String {
+        return LocalDate.parse(date, firstApiFormat).dayOfMonth.toString()
+    }
+
+    fun dayToRusLang(day: String): String {
+        if (day =="MONDAY") return "ПН"
+        if (day =="TUESDAY") return "ВТ"
+        if (day =="WEDNESDAY") return "СР"
+        if (day =="THURSDAY") return "ЧТ"
+        if (day =="FRIDAY") return "ПТ"
+        if (day =="SATURDAY") return "СБ"
+        if (day =="SUNDAY") return "ВС"
+        return ""
+    }
+
+    fun formateToHour(date:String):String {
+        return  LocalTime.parse(date, firstApiFormat).hour.toString()
     }
 }

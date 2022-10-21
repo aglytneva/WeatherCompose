@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -17,16 +18,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.weathercompose.R
+import com.example.weathercompose.feature.weather_screen.ui.DataEvent
 import com.example.weathercompose.feature.weather_screen.ui.WeatherScreenViewModel
 import com.example.weathercompose.ui.theme.DarkGray
 import org.koin.androidx.compose.getViewModel
 
 
-
-
 @Preview(showBackground = true)
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: WeatherScreenViewModel = getViewModel()) {
+    val viewState = viewModel.viewState.observeAsState()
+
+    //фон
     Image(
         painter = painterResource(id = R.drawable.weather),
         contentDescription = "img1",
@@ -41,6 +44,7 @@ fun MainScreen() {
             .padding(8.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        //Карточка текущей погоды
         Card(
             backgroundColor = DarkGray,
             modifier = Modifier
@@ -53,11 +57,12 @@ fun MainScreen() {
         ) {
             CurrentCardItem()
         }
+        //Карточка погоды по часам
         Card(
             backgroundColor = DarkGray,
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.18f)
+                .fillMaxHeight(0.3f)
                 .alpha(0.8f)
                 .padding(vertical = 8.dp),
             shape = RoundedCornerShape(10.dp)
@@ -69,34 +74,28 @@ fun MainScreen() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                itemsIndexed(listOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14) ){
-                    index, item ->
-                    ForecastHoursItem()
+                itemsIndexed(
+                    viewState.value!!.weatherHourForecastList
+                ) { index, item ->
+                    ForecastHoursItem(item)
                 }
             }
 
         }
-//        Card(
-//            backgroundColor = DarkGray,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .fillMaxHeight()
-//                .alpha(0.8f)
-//                .padding(vertical = 8.dp),
-//            shape = RoundedCornerShape(10.dp)
-//        ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    ,
-                horizontalAlignment = Alignment.CenterHorizontally,
+        //Отображение погоды по дням
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
 
-                ) {
-                itemsIndexed(listOf(1, 2, 3,4,5,6,7,8,9,10,11,12,13,14)) { index, item ->
-                    ForecastItem()
-                }
+            ) {
+            itemsIndexed(
+                viewState.value!!.weatherDayForecastList
+            ) { index, item ->
+                ForecastItem(item)
             }
+        }
 
 //        }
 

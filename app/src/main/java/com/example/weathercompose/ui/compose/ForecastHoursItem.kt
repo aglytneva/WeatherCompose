@@ -1,7 +1,6 @@
 package com.example.weathercompose.ui.compose
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -10,28 +9,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.example.weathercompose.R
+import com.example.weathercompose.feature.weather_screen.ui.model.WeatherMainModel
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
-@Preview(showBackground = true)
+
 @Composable
-fun ForecastHoursItem() {
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(40.dp)
-                ,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "Сейчас", fontSize = 10.sp, color = Color.White)
-            Image (
-                painter = painterResource(id = R.drawable.ic_baseline_wb_sunny_24),
-                contentDescription = "ImgHoursWeather",
-                colorFilter = ColorFilter.tint(Color.Yellow)
-            )
-            Text (text = "15°",  color = Color.White)
-        }
+fun ForecastHoursItem(item: WeatherMainModel) {
+
+    val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val formatedTime = "${LocalTime.parse(item.allDateWeather, firstApiFormat).hour}:00"
+
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(70.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            text = formatedTime,
+            fontSize = 12.sp,
+            color = Color.White
+        )
+        Image(
+            painter = rememberImagePainter(
+                "http://openweathermap.org/img/wn/${item.icon}@2x.png"
+            ),
+            contentDescription = "ImgHoursWeather",
+            modifier = Modifier.size(60.dp),
+        )
+        Text(
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Start,
+            text = "${item.temperature.toInt()}°", color = Color.White
+        )
     }
+}

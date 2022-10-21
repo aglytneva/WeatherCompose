@@ -41,8 +41,7 @@ fun CurrentCardItem(
 
     var city by rememberSaveable { mutableStateOf("Moscow") }
     viewModel.processDataEvent(DataEvent.WeatherIsLoaded(city))
-    viewModel.processDataEvent(DataEvent.WindIsLoaded(city))
-    viewModel.processDataEvent(DataEvent.TempIsLoaded(city))
+
 
     Column(
         modifier = Modifier
@@ -57,7 +56,9 @@ fun CurrentCardItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
+            //Карточка текущей даты
             Text(text = "Дата", color = Color.White)
+            //Карточка города
             Text(text = viewState.value!!.city.capitalize(), color = Color.White, fontSize = 20.sp)
         }
         Row(
@@ -73,33 +74,33 @@ fun CurrentCardItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${viewState.value!!.temperature}°C",
+                        text = viewState.value!!.tempCurrent,
                         color = Color.White,
                         fontSize = 64.sp
                     )
                     Image(
                         painter = rememberImagePainter(
-                            "http://openweathermap.org/img/wn/${viewState.value!!.iconWeather}@2x.png"
+                            "http://openweathermap.org/img/wn/${viewState.value!!.iconCurrent}@2x.png"
                         ),
-                        contentDescription = "img2",
+                        contentDescription = "imgCurrentcard",
                         modifier = Modifier.size(110.dp)
                     )
                 }
                 Row() {
                     Image(
                         painter = painterResource(id = R.drawable.ic_baseline_switch_access_shortcut_add_24),
-                        contentDescription = "img5",
+                        contentDescription = "imgWind",
                         modifier = Modifier.size(24.dp),
                     )
                     Text(
-                        text = viewState.value!!.windDeg,
+                        text = viewState.value!!.windDegCurrent,
                         color = Color.White, fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
 //                    Text(text = viewState.value!!., color = Color.White, fontSize = 20.sp)
                 }
                 Text(
-                    text = viewState.value!!.description,
+                    text = viewState.value!!.descriptionCurent,
                     color = Color.White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold

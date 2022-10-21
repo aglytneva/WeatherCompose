@@ -1,25 +1,22 @@
 package com.example.weathercompose.feature.weather_screen.data
 
-import com.example.weathercompose.feature.weather_screen.data.model.WeatherRemoteModel
-import com.example.weathercompose.feature.weather_screen.ui.model.TempModel
-import com.example.weathercompose.feature.weather_screen.ui.model.WeatherModel
+import androidx.compose.ui.text.capitalize
+import com.example.weathercompose.feature.weather_screen.data.model.ModelApi.WeatherDayRemoteModel
+import com.example.weathercompose.feature.weather_screen.ui.model.WeatherMainModel
 
-import com.example.weathercompose.feature.weather_screen.ui.model.WindModel
-
-
-fun WeatherRemoteModel.temperatureToDomain() = TempModel(
-    temperature = this.main.temperature.substringBefore(".")
-)
-
-fun WeatherRemoteModel.windToDomain() = WindModel(
-    windDeg = this.wind.windDeg,
-    windSpeed = this.wind.speed.substringBefore(".")
-)
-
-fun WeatherRemoteModel.weatherToDomain() = WeatherModel(
-    description = this.weather.map { it.description }.toString()
+fun WeatherDayRemoteModel.toDomain() = WeatherMainModel(
+    temperature = main.temp,
+    description = weather
+        .map { it.description }
+        .toString()
         .removeSurrounding("[", "]")
         .capitalize(),
-    icon = this.weather.map { it.icon }.toString()
+    icon = weather
+        .map { it.icon }
+        .toString()
         .removeSurrounding("[", "]"),
-)
+    windDeg = dt_txt,
+    windSpeed = dt_txt,
+    allDateWeather = dt_txt,
+
+    )
