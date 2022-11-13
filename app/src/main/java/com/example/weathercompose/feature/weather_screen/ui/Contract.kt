@@ -11,7 +11,8 @@ data class ViewState(
     val city: String,
     var isSearchVisible: Boolean,
     val weatherHourForecastList: List<WeatherMainModel>,
-    val weatherDayForecastList: List<WeatherMainModel>
+    val weatherDayForecastList: List<WeatherMainModel>,
+    val currentDay:String
 )
 
 sealed class UiEvent() : Event {
@@ -25,8 +26,10 @@ sealed class DataEvent : Event {
         val city: String
     ) :
         DataEvent()
+
     data class OnWeatherFetchFailed(val error: Throwable) : DataEvent()
     data class WeatherIsLoaded(val city: String) : DataEvent()
+    data class WeatherDaysIsLoaded(val city: String) : DataEvent()
 
 
 }

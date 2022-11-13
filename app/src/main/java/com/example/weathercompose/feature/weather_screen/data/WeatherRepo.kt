@@ -5,5 +5,4 @@ import com.example.weathercompose.feature.weather_screen.ui.model.WeatherMainMod
 
 interface WeatherRepo {
     suspend fun getAllWeather(city: String):List<WeatherMainModel>
-
 }

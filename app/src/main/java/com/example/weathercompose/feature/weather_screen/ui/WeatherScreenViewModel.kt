@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.weathercompose.base.BaseViewModel
 import com.example.weathercompose.base.Event
 import com.example.weathercompose.feature.weather_screen.WeatherInteractor
-import com.example.weathercompose.feature.weather_screen.ui.model.WeatherMainModel
 import kotlinx.coroutines.launch
 
 
@@ -19,7 +18,8 @@ class WeatherScreenViewModel(val interactor: WeatherInteractor) : BaseViewModel<
             city = "---",
             isSearchVisible = false,
             weatherHourForecastList = emptyList(),
-            weatherDayForecastList = emptyList()
+            weatherDayForecastList = emptyList(),
+            currentDay = ""
         )
 
     override fun reduce(event: Event, previousState: ViewState): ViewState? {
@@ -42,25 +42,30 @@ class WeatherScreenViewModel(val interactor: WeatherInteractor) : BaseViewModel<
 
                     )
                 }
-
                 return previousState.copy()
             }
 
             is DataEvent.OnWeatherFetchSucceed -> {
+                val allWeatherList = event.weatherHourForecastList
+                val hourList = allWeatherList.slice(0..12)
+                hourList[0].time = "Сейчас"
+                val dayList =allWeatherList.filter { it.time=="12:00" }
+
                 return previousState.copy(
-                    weatherHourForecastList = event.weatherHourForecastList.slice(0..12),
+                    weatherHourForecastList = hourList,
                     city = event.city,
-                    descriptionCurent = event.weatherHourForecastList[0].description,
-                    iconCurrent = event.weatherHourForecastList[0].icon,
+                    descriptionCurent = allWeatherList[0].description,
+                    iconCurrent = allWeatherList[0].icon,
                     tempCurrent = "${
-                        event.weatherHourForecastList[0].temperature.toInt().toString()
+                        allWeatherList[0].temperature.toInt().toString()
                     }°C",
-                    windDegCurrent = event.weatherHourForecastList[0].windDeg,
-                    weatherDayForecastList =
-                        event.weatherHourForecastList
-                            .slice(0..event.weatherHourForecastList.size step 12)
+                    windDegCurrent =
+                    "Ветер ${allWeatherList[0].windDeg} ${allWeatherList[0].windSpeed} м/с",
+                    currentDay = allWeatherList[0].numberMonthDay,
+                        weatherDayForecastList = dayList
                 )
             }
+
             is UiEvent.isSearchClicked -> {
                 return previousState.copy(
                     isSearchVisible = !previousState.isSearchVisible
@@ -69,7 +74,6 @@ class WeatherScreenViewModel(val interactor: WeatherInteractor) : BaseViewModel<
 
             else -> return null
         }
-
     }
 }
 

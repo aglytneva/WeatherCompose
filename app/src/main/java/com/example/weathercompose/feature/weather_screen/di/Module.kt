@@ -2,10 +2,7 @@ package com.example.weathercompose.feature.weather_screen.di
 
 import com.example.weathercompose.BASE_URL
 import com.example.weathercompose.feature.weather_screen.WeatherInteractor
-import com.example.weathercompose.feature.weather_screen.data.WeatherApi
-import com.example.weathercompose.feature.weather_screen.data.WeatherRemoteSource
-import com.example.weathercompose.feature.weather_screen.data.WeatherRepo
-import com.example.weathercompose.feature.weather_screen.data.WeatherRepoImpl
+import com.example.weathercompose.feature.weather_screen.data.*
 import com.example.weathercompose.feature.weather_screen.ui.WeatherScreenViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel

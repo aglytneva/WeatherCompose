@@ -14,7 +14,11 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,52 +33,111 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ForecastItem(item: WeatherMainModel) {
-    val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-    val formatedDay = LocalDate.parse(item.allDateWeather, firstApiFormat).dayOfMonth.toString()
-    val formatedMonth = LocalDate.parse(item.allDateWeather, firstApiFormat).monthValue.toString()
-    val formatedDayWeek = LocalDate.parse(item.allDateWeather, firstApiFormat).dayOfWeek.toString()
 
-    fun dayToRusLang(day: String): String {
-        if (day == "MONDAY") return "ПН"
-        if (day == "TUESDAY") return "ВТ"
-        if (day == "WEDNESDAY") return "СР"
-        if (day == "THURSDAY") return "ЧТ"
-        if (day == "FRIDAY") return "ПТ"
-        if (day == "SATURDAY") return "СБ"
-        if (day == "SUNDAY") return "ВС"
-        return ""
-    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .height(80.dp)
             .alpha(0.8f)
-            .padding(top = 4.dp),
-        shape = RoundedCornerShape(10.dp),
+            .padding(top = 10.dp),
+        shape = RoundedCornerShape(8.dp),
         backgroundColor = DarkGray,
         elevation = 8.dp
     ) {
         Row(
-            modifier = Modifier.padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .alpha(1f)
+                .fillMaxSize()
+                ,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth(0.15f)
+                    .fillMaxHeight()
+                    .alpha(1f)
             )
             {
-                Text(text = "${formatedDay}/${formatedMonth}", color = Color.White, fontSize = 14.sp)
-                Text(text = dayToRusLang(formatedDayWeek), color = Color.White, fontSize = 14.sp)
+                //Дата
+                Text(
+                    text = item.numberMonthDay,
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                // День недели
+                Text(
+                    text = item.weekDay,
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
-            Text(text = item.description, color = Color.White, fontSize = 14.sp)
-            Text(text = "${item.temperature.toInt()}°", color = Color.White, fontSize = 14.sp)
-            Image(
-                painter = rememberImagePainter(
-                    "http://openweathermap.org/img/wn/${item.icon}@2x.png",
-
-                ),
-                contentDescription = "ImgHoursWeather",
-                modifier = Modifier.size(24.dp),
+            // Описание погоды
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth(0.55f)
+                    .fillMaxHeight()
+                    .padding(start = 8.dp)
+                    .alpha(1f)
             )
+            {
+                Text(
+                    text = item.description,
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Left,
+                    softWrap = false
+                )
+            }
+            // Температура
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .fillMaxHeight()
+                    .alpha(1f),
+                )
+            {
+                Text(
+                    text = "${item.temperature.toInt()}°",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    )
+            }
+            // Картинка
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .alpha(1f)
+            )
+            {
+
+                Image(
+                    painter = rememberImagePainter(
+                        "http://openweathermap.org/img/wn/${item.icon}@2x.png",
+
+                        ),
+                    contentDescription = "ImgHoursWeather",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(end = 4.dp)
+                        .fillMaxSize()
+                        .alpha(1f),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
     }
 }

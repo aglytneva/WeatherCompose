@@ -13,6 +13,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,11 +32,11 @@ fun MainScreen(viewModel: WeatherScreenViewModel = getViewModel()) {
 
     //фон
     Image(
-        painter = painterResource(id = R.drawable.weather),
+        painter = painterResource(id = R.drawable.clouds),
         contentDescription = "img1",
         modifier = Modifier
             .fillMaxSize()
-            .alpha(0.6f),
+            .alpha(0.8f),
         contentScale = ContentScale.FillBounds
     )
     Column(
@@ -50,7 +51,7 @@ fun MainScreen(viewModel: WeatherScreenViewModel = getViewModel()) {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.38f)
-                .alpha(0.8f)
+                .alpha(0.7f)
                 .padding(vertical = 8.dp),
             elevation = 8.dp,
             shape = RoundedCornerShape(10.dp),
@@ -62,15 +63,16 @@ fun MainScreen(viewModel: WeatherScreenViewModel = getViewModel()) {
             backgroundColor = DarkGray,
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.3f)
-                .alpha(0.8f)
+                .fillMaxHeight(0.4f)
+                .alpha(0.7f)
                 .padding(vertical = 8.dp),
             shape = RoundedCornerShape(10.dp)
         ) {
             LazyRow(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(4.dp),
+                    .padding(4.dp)
+                    .alpha(1f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {

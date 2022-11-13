@@ -1,11 +1,11 @@
 package com.example.weathercompose.feature.weather_screen.data
 
-import com.example.weathercompose.feature.weather_screen.data.model.ModelApi.WeatherRemoteModel
-import com.example.weathercompose.feature.weather_screen.data.model.ModelApi.WeatherDayRemoteModel
+import com.example.weathercompose.feature.weather_screen.data.model.ModelApiHours.WeatherRemoteModel
 
-class WeatherRemoteSource(private val api: WeatherApi) {
+class WeatherRemoteSource(private val apiHour: WeatherApi) {
     //TO DO add query
     suspend fun getWeather(city: String): WeatherRemoteModel {
-        return api.getWeather(query = city)
+        return apiHour.getWeather(query = city)
     }
+
 }

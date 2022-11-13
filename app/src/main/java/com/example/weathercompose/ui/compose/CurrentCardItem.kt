@@ -1,5 +1,7 @@
 package com.example.weathercompose.ui.compose
 
+import android.location.LocationManager
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,6 +26,7 @@ import com.example.weathercompose.feature.weather_screen.ui.WeatherScreenViewMod
 import org.koin.androidx.compose.getViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -37,34 +40,45 @@ fun CurrentCardItem(
     viewModel: WeatherScreenViewModel = getViewModel()
 ) {
 
+
     val viewState = viewModel.viewState.observeAsState()
 
     var city by rememberSaveable { mutableStateOf("Moscow") }
     viewModel.processDataEvent(DataEvent.WeatherIsLoaded(city))
-
+    viewModel.processDataEvent(DataEvent.WeatherDaysIsLoaded(city))
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .alpha(1f),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.12f)
-                .padding(start = 10.dp, end = 10.dp),
+                .padding(start = 10.dp, end = 10.dp)
+                .alpha(1f),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
             //Карточка текущей даты
-            Text(text = "Дата", color = Color.White)
+            Text(
+                text = "Сегодня ${viewState.value!!.currentDay}",
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
             //Карточка города
-            Text(text = viewState.value!!.city.capitalize(), color = Color.White, fontSize = 20.sp)
+            Text(
+                text = viewState.value!!.city.capitalize(), color = Color.White, fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.78f),
+                .fillMaxHeight(0.78f)
+                .alpha(1f),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -76,14 +90,17 @@ fun CurrentCardItem(
                     Text(
                         text = viewState.value!!.tempCurrent,
                         color = Color.White,
-                        fontSize = 64.sp
+                        fontSize = 64.sp,
+                        fontWeight = FontWeight.Bold
                     )
                     Image(
                         painter = rememberImagePainter(
                             "http://openweathermap.org/img/wn/${viewState.value!!.iconCurrent}@2x.png"
                         ),
                         contentDescription = "imgCurrentcard",
-                        modifier = Modifier.size(110.dp)
+                        modifier = Modifier
+                            .size(110.dp)
+                            .alpha(1f)
                     )
                 }
                 Row() {
