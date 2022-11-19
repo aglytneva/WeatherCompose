@@ -16,7 +16,8 @@ fun WeatherHourRemoteModel.toDomain() = WeatherMainModel(
     icon = weather
         .map { it.icon }
         .toString()
-        .removeSurrounding("[", "]"),
+        .removeSurrounding("[", "]")
+        .replace("n","d"),
     windDeg = toTextualDescription(wind.deg.toString()),
     windSpeed = wind.speed.toString().substringBefore("."),
     allDateWeather = dt_txt,
