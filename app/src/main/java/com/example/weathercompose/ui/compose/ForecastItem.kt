@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,6 +28,7 @@ import com.example.weathercompose.R
 import com.example.weathercompose.feature.weather_screen.ui.model.WeatherMainModel
 import com.example.weathercompose.ui.theme.DarkGray
 import com.example.weathercompose.ui.theme.LightGray
+import com.example.weathercompose.ui.theme.MarkPro
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -65,14 +67,16 @@ fun ForecastItem(item: WeatherMainModel) {
                     text = item.numberMonthDay,
                     color = Color.White,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = MarkPro
                 )
                 // День недели
                 Text(
                     text = item.weekDay,
                     color = Color.White,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = MarkPro
                 )
             }
             // Описание погоды
@@ -92,7 +96,8 @@ fun ForecastItem(item: WeatherMainModel) {
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Left,
-                    softWrap = false
+                    softWrap = false,
+                    fontFamily = MarkPro
                 )
             }
             // Температура
@@ -111,6 +116,7 @@ fun ForecastItem(item: WeatherMainModel) {
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
+                    fontFamily = MarkPro
                     )
             }
             // Картинка

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.weathercompose.R
 import com.example.weathercompose.feature.weather_screen.ui.model.WeatherMainModel
+import com.example.weathercompose.ui.theme.MarkPro
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -44,7 +45,8 @@ fun ForecastHoursItem(item: WeatherMainModel) {
             modifier = Modifier
                 .fillMaxHeight(0.2f)
                 .padding(top = 4.dp)
-                .alpha(1f)
+                .alpha(1f),
+            fontFamily = MarkPro
         )
         Text(
             fontWeight = FontWeight.Bold,
@@ -56,7 +58,8 @@ fun ForecastHoursItem(item: WeatherMainModel) {
             modifier = Modifier
                 .fillMaxHeight(0.2f)
                 .padding(top = 4.dp)
-                .alpha(1f)
+                .alpha(1f),
+            fontFamily = MarkPro
         )
         Image(
             painter = rememberImagePainter(
@@ -79,7 +82,8 @@ fun ForecastHoursItem(item: WeatherMainModel) {
             modifier = Modifier.fillMaxHeight()
                 .padding(4.dp)
                 .alpha(1f),
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            fontFamily = MarkPro
 
         )
     }

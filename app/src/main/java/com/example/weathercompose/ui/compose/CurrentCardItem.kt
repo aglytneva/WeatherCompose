@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.toUpperCase
 import com.example.weathercompose.feature.weather_screen.ui.DataEvent
 import com.example.weathercompose.feature.weather_screen.ui.UiEvent
+import com.example.weathercompose.ui.theme.MarkPro
 
 @Preview(showBackground = true)
 @Composable
@@ -66,12 +67,14 @@ fun CurrentCardItem(
             Text(
                 text = "Сегодня ${viewState.value!!.currentDay}",
                 color = Color.White,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = MarkPro
             )
             //Карточка города
             Text(
                 text = viewState.value!!.city.capitalize(), color = Color.White, fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = MarkPro
             )
         }
         Row(
@@ -91,7 +94,8 @@ fun CurrentCardItem(
                         text = viewState.value!!.tempCurrent,
                         color = Color.White,
                         fontSize = 64.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = MarkPro
                     )
                     Image(
                         painter = rememberImagePainter(
@@ -112,7 +116,8 @@ fun CurrentCardItem(
                     Text(
                         text = viewState.value!!.windDegCurrent,
                         color = Color.White, fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = MarkPro
                     )
 //                    Text(text = viewState.value!!., color = Color.White, fontSize = 20.sp)
                 }
@@ -120,7 +125,8 @@ fun CurrentCardItem(
                     text = viewState.value!!.descriptionCurent,
                     color = Color.White,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = MarkPro
                 )
             }
         }
@@ -153,6 +159,7 @@ fun CurrentCardItem(
                     singleLine = true,
                     textStyle = TextStyle(
                         color = Color.White,
+                        fontFamily = MarkPro
                     ),
                     modifier = Modifier
                         .width(IntrinsicSize.Min)

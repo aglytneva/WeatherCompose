@@ -16,6 +16,7 @@ import com.example.weathercompose.ui.theme.WeatherComposeTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MaterialTheme
         setContent {
             WeatherComposeTheme {
                 MainScreen()
