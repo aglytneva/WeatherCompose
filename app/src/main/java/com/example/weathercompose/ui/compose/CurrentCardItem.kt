@@ -170,6 +170,7 @@ fun CurrentCardItem(
                 modifier = Modifier
                     .fillMaxHeight(),
                 onClick = {
+                    viewModel.processUiEvent(UiEvent.isUpdatStateButtonCkicked)
 
                 }) {
                 Icon(

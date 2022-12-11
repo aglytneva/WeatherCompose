@@ -17,7 +17,7 @@ data class ViewState(
 
 sealed class UiEvent() : Event {
     object isSearchClicked : UiEvent()
-
+    object isUpdatStateButtonCkicked:UiEvent()
 }
 
 sealed class DataEvent : Event {

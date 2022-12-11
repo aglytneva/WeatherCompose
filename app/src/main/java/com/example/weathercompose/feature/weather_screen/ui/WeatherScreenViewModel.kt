@@ -71,9 +71,15 @@ class WeatherScreenViewModel(val interactor: WeatherInteractor) : BaseViewModel<
                     isSearchVisible = !previousState.isSearchVisible
                 )
             }
+            is UiEvent.isUpdatStateButtonCkicked -> {
+                processDataEvent(DataEvent.WeatherIsLoaded(previousState.city))
+                processDataEvent(DataEvent.WeatherDaysIsLoaded(previousState.city))
+            }
+
 
             else -> return null
         }
+        return null
     }
 }
 
